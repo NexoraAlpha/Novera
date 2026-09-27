@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#5d73ad">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="light">
+  <link rel="icon" href="./favicon-32.png">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+  <title>Novera Couple</title>
+</head>
+<body class="home-replica">
+  <div class="home-map-bg" aria-hidden="true"></div>
+  <div class="home-map-shade" aria-hidden="true"></div>
+
+  <header class="replica-topbar">
+    <a class="round-action settings-action" href="./settings.html" aria-label="Pengaturan">
+      <span class="hex-icon">◉</span>
+    </a>
+    <div class="together-card">
+      <div class="together-label">Together</div>
+      <div class="together-value" id="togetherTop">236 <span>hari</span></div>
+    </div>
+    <button class="round-action notification-action" id="notificationButton" type="button" aria-label="Notifikasi">
+      <span class="bell-icon">♧</span><span class="notification-badge" id="notificationBadge" hidden>0</span>
+    </button>
+    <div class="notification-panel replica-notifications" id="notificationPanel">
+      <div class="notification-head"><strong>Notifikasi</strong><button id="notificationMarkRead" type="button">Tandai dibaca</button></div>
+      <div id="notificationList"><div class="notification-empty">Memuat notifikasi…</div></div>
+    </div>
+  </header>
+
+  <main class="replica-stage">
+    <section class="replica-map-card" aria-label="Peta pasangan">
+      <div id="map"></div>
+      <div class="map-fade-top"></div>
+      <div class="map-distance-float" id="distancePill"><span id="distance">20 km</span></div>
+
+      <div class="stay-card stay-me">
+        <span class="stay-house">🏠</span><span>Tinggal 22h</span>
+      </div>
+      <div class="stay-card stay-partner">
+        <span class="stay-house">🏠</span><span>Tinggal 4h</span><button type="button">Simpan <b>›</b></button>
+      </div>
+
+      <button class="map-control locate-control" id="centerMap" type="button" aria-label="Lokasi saya"><span>⌾</span></button>
+      <button class="map-control layers-control" type="button" aria-label="Layer peta"><span>◇</span></button>
+
+      <div class="map-photo-card photo-me" id="mapMeCard">
+        <div class="map-photo-avatar" id="homeMeAvatar" data-profile-avatar>J</div>
+        <div class="mini-sticker">🌳</div>
+        <div class="mini-sticker lower">🍭</div>
+      </div>
+      <div class="map-photo-card photo-partner" id="mapPartnerCard">
+        <div class="map-photo-avatar partner" id="homePartnerAvatar" data-partner-avatar>?</div>
+        <div class="partner-home">🏫</div>
+      </div>
+      <div class="panda-sticker" aria-hidden="true">🐼</div>
+    </section>
+
+    <section class="home-sheet" id="homeSheet">
+      <div class="sheet-handle"></div>
+      <div class="quick-grid">
+        <a class="quick-tile quick-blue" href="./location.html"><span class="quick-art">🗺️</span><span>Lokasi</span></a>
+        <a class="quick-tile quick-lilac" href="./couple.html"><span class="quick-art">💌</span><span>Momen</span></a>
+        <a class="quick-tile quick-pink" href="./connect.html"><span class="quick-art">🎮</span><span>Main</span></a>
+        <a class="quick-tile quick-yellow" href="./settings.html"><span class="quick-art">💗＋</span><span>Widget</span></a>
+      </div>
+
+      <div class="daily-head"><h2>Hati Harian</h2><a href="./couple.html">Ruang <b>›</b></a></div>
+      <article class="love-streak-card">
+        <div><span>Love Streak kami</span><strong id="streakValue">♡</strong><small id="togetherLabel">Jaga satu sinyal kecil setiap hari.</small></div>
+        <div class="streak-heart">💜</div>
+      </article>
+      <div class="home-status-row">
+        <div><span class="status-dot" id="meDot"></span><b id="meName">You</b><small id="meStatus">Offline</small></div>
+        <div><span class="status-dot" id="partnerDot"></span><b id="partnerName">Partner</b><small id="partnerStatus">Belum terhubung</small></div>
+      </div>
+
+      <!-- Functional pairing/profile controls are kept intact but opened from the existing Couple/Settings pages. -->
+      <section class="home-function-cache" aria-hidden="true">
+        <div id="pairCard"><button id="createPair">Buat kode</button><input id="pairCode"><button id="joinPair">Hubungkan</button><div id="generatedCode"></div><div id="pairTimer"></div></div>
+        <div id="profileTrigger"></div><div id="profileMenu"><input id="profileName"><input id="profilePhoto"><button id="saveProfile">Simpan profil</button><button id="logoutAccount">Logout</button><div id="profileMenuName"></div><div id="profileMenuEmail"></div></div>
+        <span id="locationToggle" class="switch"></span><span id="speed">0.0</span><span id="locationText"></span><span id="movementState">Stationary</span><span id="movementHint"></span>
+        <span id="activeDuration">0m</span><span id="partnerLocation"></span><span id="locationMeStatus"></span><span id="locationMeLast"></span><span id="locationPartnerStatus"></span><span id="locationPartnerLast"></span><span id="partnerBattery"></span><span id="coupleConnectionLabel"></span><span id="settingsProfileName"></span><span id="settingsProfileEmail"></span><span id="settingsAccountType"></span><span id="settingsAuthLabel"></span><span id="authLink"></span><span id="guestAccountHint"></span><span id="settingsPairStatus"></span><span id="disconnectStatus"></span><span data-disconnect-request></span><button id="leavePair"></button><button id="cancelLeavePair"></button><button id="refreshBtn"></button><button id="setTogetherDate"></button><span id="petName"></span><span id="petStats"></span><button id="petFeed"></button><button id="petPlay"></button><button id="petRest"></button>
+      </section>
+    </section>
+  </main>
+
+  <nav class="replica-bottom-nav" aria-label="Navigasi utama">
+    <a class="replica-nav active" href="./index.html"><span class="nav-symbol">◒</span></a>
+    <a class="replica-nav" href="./location.html"><span class="nav-symbol paw">●</span></a>
+    <a class="replica-nav" href="./couple.html"><span class="nav-symbol camera">▣</span></a>
+    <a class="replica-nav" href="./connect.html"><span class="nav-symbol chat">◌</span></a>
+    <a class="replica-nav" href="./settings.html"><span class="nav-symbol people">♟</span></a>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
